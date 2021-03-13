@@ -10,3 +10,5 @@ learning.
 Our motive is to maintain the easiest user accessibility in our LMS system and engage our
 learners in the learning process in the most manageable way with timing flexibilities provided
 and promoting the two way communication between teachers and students.
+
+UPES CSR: https://www.upes.ac.in/social-impact
