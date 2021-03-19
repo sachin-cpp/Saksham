@@ -8,7 +8,26 @@
 				<?php include('class_sidebar.php'); ?>
                 <div class="span9" id="content">
                      <div class="row-fluid">
-					     
+					     <!-- breadcrumb -->
+				<div class="pull-right">
+							<a href="my_students.php<?php echo '?id='.$get_id; ?>" class="btn btn-info"><i class="icon-arrow-left"></i> Back</a>
+						</div>
+										<?php $class_query = mysqli_query($conn,"select * from teacher_class
+										LEFT JOIN class ON class.class_id = teacher_class.class_id
+										LEFT JOIN subject ON subject.subject_id = teacher_class.subject_id
+										where teacher_class_id = '$get_id'")or die(mysqli_error());
+										$class_row = mysqli_fetch_array($class_query);
+										?>
+				
+					     <ul class="breadcrumb">
+							<li><a href="#"><?php echo $class_row['class_name']; ?></a> <span class="divider">/</span></li>
+							<li><a href="#"><?php echo $class_row['subject_code']; ?></a> <span class="divider">/</span></li>
+							<li><a href="#">My Students</a><span class="divider">/</span></li>
+							<li><a href="#"><b>Add Student</b></a></li>
+						</ul>
+						
+						 <!-- end breadcrumb -->
+					 
                         <!-- block -->
                         <div id="block_bg" class="block">
                             <div class="navbar navbar-inner block-header">
@@ -23,7 +42,7 @@
 												<br>
 												<br>
                            
-							 
+							 <table cellpadding="0" cellspacing="0" border="0" class="table" id="example">
                           
 						 <thead>
 		
@@ -84,7 +103,46 @@
 if (isset($_POST['submit'])){
 
 	$test = $_POST['test'];
+	for($b = 1; $b <=  $test; $b++)
+	{
 	
+
+		
+		
+	$test1 = "student_id".$b;
+	$test2 = "class_id".$b;
+	$test3 = "teacher_id".$b;
+	$test4 = "add_student".$b;
+	
+	$id = $_POST[$test1];
+	$class_id = $_POST[$test2];
+	$teacher_id = $_POST[$test3];
+	$Add = $_POST[$test4];
+	
+ 	$query = mysqli_query($conn,"select * from teacher_class_student where student_id = '$id' and teacher_class_id = '$class_id' ")or die(mysqli_error());
+	$count = mysqli_num_rows($query); 
+	
+ 	if ($count > 0){ ?>
+	<script>
+	 alert('Student Already in the class'); 
+	</script>
+	<script>
+	window.location = "add_student.php<?php echo '?id='.$get_id; ?>"; 
+	</script>
+	
+	<?php
+	}else  
+	if($Add == 'Add'){
+	
+	
+	mysqli_query($conn,"insert into teacher_class_student (student_id,teacher_class_id,teacher_id) values('$id','$class_id','$teacher_id') ")or die(mysqli_error());
+	
+	
+	}else{
+	
+	
+	
+	}
 	
 
 	
@@ -102,6 +160,10 @@ if (isset($_POST['submit'])){
 	 
 	
 	?>
+	
+					
+                      
+								
                          
                             </tbody>
                         </table>
@@ -116,8 +178,8 @@ if (isset($_POST['submit'])){
                 </div>
 			
             </div>
-		
+		<?php include('footer.php'); ?>
         </div>
-		
+		<?php include('script.php'); ?>
     </body>
 </html>
